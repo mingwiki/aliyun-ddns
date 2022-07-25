@@ -12,7 +12,8 @@ export const testIpv4 = "http://4.ipw.cn"
 
 export const testIpv6 = "http://6.ipw.cn"
 
-export const resources = [{ url: testIpv4, type: "A" }, { url: testIpv6, type: "AAAA" }]
+// export const resources = [{ url: testIpv4, type: "A" }, { url: testIpv6, type: "AAAA" }]
+export const resources = [{ url: testIpv4, type: "A" }]
 
 export const DomainName = "naizi.fun"
 
