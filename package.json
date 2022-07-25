@@ -1,0 +1,33 @@
+{
+  "name": "aliyun-ddns",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "@alicloud/pop-core": "^1.7.12",
+    "dotenv": "^16.0.1",
+    "node-fetch": "^3.2.9"
+  },
+  "scripts": {
+    "start": "node -r dotenv/config index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mingwiki/aliyun-ddns.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mingwiki/aliyun-ddns/issues"
+  },
+  "homepage": "https://github.com/mingwiki/aliyun-ddns#readme",
+  "devDependencies": {
+    "eslint": "^8.20.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0"
+  }
+}
