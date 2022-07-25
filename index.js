@@ -1,34 +1,31 @@
-import Core from "@alicloud/pop-core"
 import fetch from "node-fetch"
-import { key, resources, DomainName, consoleLog } from "./data.js"
+import { ipv4AndIpv6, ipv4Only, DomainName, log, request } from "./data.js"
 
-const client = new Core(key)
-const requestOption = {
-  method: "POST",
-  formatParams: false
-}
-const update = (RecordId, Value, Type) =>
-  ["*", "@"].forEach(RR => {
-    client
-      .request(
-        "UpdateDomainRecord",
-        {
-          RecordId,
-          RR,
-          Type,
-          Value
-        },
-        requestOption
-      )
-      .then(
-        result => consoleLog(result),
-        ex => consoleLog(ex)
-      )
-  })
+const update = (RecordId, RR, Value, Type) =>
+  request(
+    "UpdateDomainRecord",
+    {
+      RecordId,
+      RR,
+      Type,
+      Value
+    }
+  )
+    .then(
+      result => log(result),
+      ex => log(ex)
+    )
 
-resources.forEach(item => fetch(item.url).then((res) => res.text()).then(ip => {
-  client.request("DescribeDomainRecords", { DomainName }, requestOption).then(
-    result => result.DomainRecords.Record.filter(i => i.Type === item.type).forEach(i => update(i.RecordId, ip, item.type)),
-    ex => consoleLog(ex)
+const sketch = (resources) => resources.forEach(item => fetch(item.url).then((res) => res.text()).then(ip => {
+  request("DescribeDomainRecords", { DomainName }).then(
+    result => result.DomainRecords.Record.filter(i => i.Type === item.Type).forEach(i => update(i.RecordId, i.RR, ip.includes(":") ? [ip] : ip, i.Type)),
+    ex => log(ex)
   )
 }))
+
+try {
+  sketch(ipv4AndIpv6)
+} catch (error) {
+  log(error)
+  sketch(ipv4Only)
+}
