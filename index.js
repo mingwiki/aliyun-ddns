@@ -1,31 +1,18 @@
 import fetch from "node-fetch"
-import { ipv4AndIpv6, ipv4Only, DomainName, log, request } from "./data.js"
+import { ipv4AndIpv6, DomainName, log, write, request } from "./data.js"
 
-const update = (RecordId, RR, Value, Type) =>
+const update = (RecordId, RR, Type, Value) =>
   request(
-    "UpdateDomainRecord",
-    {
-      RecordId,
-      RR,
-      Type,
-      Value
-    }
-  )
-    .then(
-      result => log(result),
-      ex => log(ex)
-    )
+    "UpdateDomainRecord", { RecordId, RR, Type, Value })
+    .then(result => log(result), ex => log(ex))
+    .catch((error) => log(error))
 
-const sketch = (resources) => resources.forEach(item => fetch(item.url).then((res) => res.text()).then(ip => {
-  request("DescribeDomainRecords", { DomainName }).then(
-    result => result.DomainRecords.Record.filter(i => i.Type === item.Type).forEach(i => update(i.RecordId, i.RR, ip.includes(":") ? [ip] : ip, i.Type)),
-    ex => log(ex)
-  )
-}))
+const sketch = (resources) => resources.forEach(item => fetch(item.url).then((res) => res.text())
+  .then(ip => {
+    write(ip)
+    request("DescribeDomainRecords", { DomainName })
+      .then(result => result.DomainRecords.Record.filter(i => i.Type === item.Type).forEach(i => update(i.RecordId, i.RR, i.Type, ip.includes(":") ? [ip] : ip)), ex => log(ex))
+      .catch((error) => log(error))
+  }).catch((error) => log(error)))
 
-try {
-  sketch(ipv4AndIpv6)
-} catch (error) {
-  log(error)
-  sketch(ipv4Only)
-}
+sketch(ipv4AndIpv6)

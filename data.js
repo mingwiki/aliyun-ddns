@@ -1,4 +1,5 @@
 import Core from "@alicloud/pop-core"
+import fs from "fs"
 
 const key = {
   accessKeyId: process.env.Id,
@@ -16,10 +17,10 @@ const testIpv6 = "http://6.ipw.cn"
 
 export const ipv4AndIpv6 = [{ url: testIpv4, Type: "A" }, { url: testIpv6, Type: "AAAA" }]
 
-export const ipv4Only = [{ url: testIpv4, Type: "A" }]
-
 export const DomainName = "naizi.fun"
 
-export const log = log => { if (log) console.log(`${new Date().toString()}\n${log}\n`) }
+export const log = data => { if (data) console.log(`${new Date().toString()}\n${data}\n`) }
+
+export const write = data => { if (data) fs.appendFile("./ip.log", `${new Date().toString()}\n${data}\n`, err => log(err)) }
 
 export const request = (info, obj) => new Core(key).request(info, obj, requestOption)
