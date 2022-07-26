@@ -11,11 +11,12 @@
         "sourceType": "module"
     },
     "rules": {
-        "eqeqeq": "off",
+        "eqeqeq": "error",
         "curly": "error",
         "quotes": [
             "error",
             "double"
-        ]
+        ],
+        "arrow-parens": "error"
     }
 }
