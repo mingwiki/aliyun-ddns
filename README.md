@@ -27,6 +27,6 @@ $ npm install && npm start
 
 ```bash
 $ crontab -e
-  0 */12 * * * cd ~/aliyun-ddns && npm start
+  0 */12 * * * /path/to/npm start --prefix /path/to/aliyun-ddns
 $ crontab -l
 ```
