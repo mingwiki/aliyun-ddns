@@ -13,8 +13,7 @@ const sketch = (resources) =>
   resources.forEach((item) =>
     fetch(item.url)
       .then((res) => res.text())
-      .then((ip) => {
-        write(ip)
+      .then((ip) =>
         request("DescribeDomainRecords", { DomainName })
           .then(
             (result) =>
@@ -24,7 +23,8 @@ const sketch = (resources) =>
             (error) => log(error)
           )
           .catch((error) => log(error))
-      })
+          .finally(() => write(ip))
+      )
       .catch((error) => log(error))
   )
 
