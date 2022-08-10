@@ -6,7 +6,7 @@ import {
   write,
   request,
   checkIp,
-} from './data';
+} from './data.js';
 
 const UpdateDomainRecord = (RecordId, RR, Type, Value) => request('UpdateDomainRecord', {
   RecordId, RR, Type, Value,
