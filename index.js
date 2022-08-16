@@ -32,8 +32,7 @@ const sketch = (resources) => resources.forEach((item) => {
       .then((ip) => {
         if (checkIp(item.file, ip)) {
           DescribeDomainRecords({ item, ip });
-        }else{
-	  log(`${ip}未改变`)
+        }else log(`${ip}未改变`)
       })
       .catch((error) => log(error));
   } catch (error) {
