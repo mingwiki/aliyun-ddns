@@ -37,14 +37,3 @@ export const write = (file, data) => {
 
 export const request = (info, obj) =>
   new Core(key).request(info, obj, requestOption)
-
-export const checkIp = (file, ip) => {
-  const oldIP = fs.existsSync(file)
-    ? fs
-        .readFileSync(file, 'utf-8')
-        .split('\n')
-        .filter((i) => i)
-        .pop()
-    : null
-  return ip !== oldIP
-}
