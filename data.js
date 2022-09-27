@@ -15,23 +15,15 @@ const requestOption = {
 }
 
 export const ipv4AndIpv6 = [
-  { file: './ipv4.log', url: testIpv4 || 'http://4.ipw.cn', Type: 'A' },
-  { file: './ipv6.log', url: testIpv6 || 'http://6.ipw.cn', Type: 'AAAA' },
+  { url: testIpv4 || 'http://4.ipw.cn', Type: 'A' },
+  { url: testIpv6 || 'http://6.ipw.cn', Type: 'AAAA' },
 ]
 
 export const DomainName = Domain
 
 export const log = (data) => {
   if (data) {
-    console.log(`${new Date().toString()}\n${data}\n`)
-  }
-}
-
-export const write = (file, data) => {
-  if (data) {
-    fs.appendFile(file, `${new Date().toString()}\n${data}\n`, (err) =>
-      log(err),
-    )
+    console.log(`${new Date().toString()}\n${JSON.stringify(data)}\n`)
   }
 }
 
