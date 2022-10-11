@@ -1,6 +1,5 @@
 import fetch from 'node-fetch'
 import { ipv4AndIpv6, DomainName, log, request } from './data.js'
-
 const UpdateDomainRecord = (RecordId, RR, Type, Value) =>
   request('UpdateDomainRecord', {
     RecordId,
@@ -10,23 +9,20 @@ const UpdateDomainRecord = (RecordId, RR, Type, Value) =>
   })
     .then((result) => log(result))
     .catch((error) => log(error))
-const DescribeDomainRecords = ({ item, ip }) =>
+const sketch = (items) =>
   request('DescribeDomainRecords', { DomainName })
     .then((result) =>
-      result.DomainRecords.Record.filter((i) => i.Type === item.Type).forEach(
-        (i) => UpdateDomainRecord(i.RecordId, i.RR, i.Type, ip),
-      ),
+      items.map(async (item) => {
+        const ip = await fetch(item.url).then((res) => res.text())
+        if (ip) {
+          result.DomainRecords.Record.filter(
+            (i) => i.Type === item.Type,
+          ).forEach((i) => UpdateDomainRecord(i.RecordId, i.RR, i.Type, ip))
+        } else {
+          log('IP cannot find')
+        }
+      }),
     )
     .catch((error) => log(error))
-const sketch = (resources) =>
-  resources.forEach((item) => {
-    try {
-      fetch(item.url)
-        .then((res) => res.text())
-        .then((ip) => DescribeDomainRecords({ item, ip }))
-        .catch((error) => log(error))
-    } catch (error) {
-      log(error)
-    }
-  })
+
 sketch(ipv4AndIpv6)
