@@ -15,6 +15,7 @@ const sketch = (items) =>
       items.map(async (item) => {
         const ip = await fetch(item.url).then((res) => res.text())
         if (ip) {
+          log(ip)
           result.DomainRecords.Record.filter(
             (i) => i.Type === item.Type,
           ).forEach((i) => UpdateDomainRecord(i.RecordId, i.RR, i.Type, ip))
