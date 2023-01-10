@@ -13,16 +13,20 @@ const sketch = (items) =>
   request('DescribeDomainRecords', { DomainName })
     .then((result) =>
       items.map(async (item) => {
-        const ip = await fetch(item.url).then((res) => res.text())
-        if (ip) {
-          log(ip)
-          result.DomainRecords.Record.filter(
-            (i) => i.Type === item.Type,
-          ).forEach((i) => UpdateDomainRecord(i.RecordId, i.RR, i.Type, ip))
-        } else {
-          log('IP cannot find')
+        try {
+          const ip = await fetch(item.url).then((res) => res.text())
+          if (ip) {
+            log(ip)
+            result.DomainRecords.Record.filter(
+              (i) => i.Type === item.Type
+            ).forEach((i) => UpdateDomainRecord(i.RecordId, i.RR, i.Type, ip))
+          } else {
+            log('IP cannot find')
+          }
+        } catch (error) {
+          console.log(error)
         }
-      }),
+      })
     )
     .catch((error) => log(error))
 
