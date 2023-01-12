@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import { ipv4AndIpv6, DomainName, log, request } from './data.js'
 const UpdateDomainRecord = (RecordId, RR, Type, Value) =>
   request('UpdateDomainRecord', {

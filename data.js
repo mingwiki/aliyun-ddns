@@ -1,6 +1,4 @@
 import Core from '@alicloud/pop-core'
-import fs from 'fs'
-
 const { AccessKeyID, AccessKeySecret, testIpv4, testIpv6, Domain } = process.env
 const key = {
   accessKeyId: AccessKeyID,
