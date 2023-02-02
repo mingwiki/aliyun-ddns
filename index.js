@@ -1,29 +1,31 @@
-import { ipv4AndIpv6, DomainName, log, request } from './data.js'
-const UpdateDomainRecord = (RecordId, RR, Type, Value) =>
-  request('UpdateDomainRecord', {
-    RecordId,
-    RR,
-    Type,
-    Value,
-  })
-    .then((result) => log(result))
-    .catch((error) => log(error))
+import {
+  ipv4AndIpv6,
+  DomainName,
+  log,
+  request,
+  ipv4Reg,
+  ipv6Reg,
+  update,
+} from './data.js'
+
 const sketch = (items) =>
   request('DescribeDomainRecords', { DomainName })
     .then((result) =>
       items.map(async (item) => {
         try {
-          const ip = await fetch(item.url).then((res) => res.text())
-          if (ip) {
-            log(ip)
-            result.DomainRecords.Record.filter(
-              (i) => i.Type === item.Type
-            ).forEach((i) => UpdateDomainRecord(i.RecordId, i.RR, i.Type, ip))
+          const ip = await fetch(item.url)
+            .then((res) => res.text())
+            .catch((err) => log(err))
+          if (ipv4Reg.test(ip) || ipv6Reg.test(ip)) {
+            update(item, result, ip)
           } else {
-            log('IP cannot find')
+            const ip = await fetch(item.backupUrl)
+              .then((res) => res.text())
+              .catch((err) => log(err))
+            update(item, result, ip)
           }
         } catch (error) {
-          console.log(error)
+          log(error)
         }
       })
     )
