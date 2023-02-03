@@ -13,12 +13,14 @@ const sketch = (items) =>
     .then((result) =>
       items.map(async (item) => {
         try {
+          log(item.url)
           const ip = await fetch(item.url)
             .then((res) => res.text())
             .catch((err) => log(err))
           if (ipv4Reg.test(ip) || ipv6Reg.test(ip)) {
             update(item, result, ip)
           } else {
+            log(item.backupUrl)
             const ip = await fetch(item.backupUrl)
               .then((res) => res.text())
               .catch((err) => log(err))
