@@ -1,6 +1,6 @@
 import {
   ipv4AndIpv6,
-  DomainName,
+  DomainNames,
   log,
   request,
   ipv4Reg,
@@ -8,7 +8,7 @@ import {
   update,
 } from './data.js'
 
-const sketch = (items) =>
+const sketch = (items, DomainName) =>
   request('DescribeDomainRecords', { DomainName })
     .then((result) =>
       items.map(async (item) => {
@@ -33,4 +33,4 @@ const sketch = (items) =>
     )
     .catch((error) => log(error))
 
-sketch(ipv4AndIpv6)
+DomainNames.map((DomainName) => sketch(ipv4AndIpv6, DomainName))

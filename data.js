@@ -23,7 +23,7 @@ export const ipv4AndIpv6 = [
   { url: testIpv4, backupUrl: backupIpv4, Type: 'A' },
   { url: testIpv6, backupUrl: backupIpv6, Type: 'AAAA' },
 ]
-export const DomainName = Domain
+export const DomainNames = Domain.split(',').map((i) => i.trim())
 export const log = (data) => {
   if (data) {
     console.log(`${new Date().toString()}\n${JSON.stringify(data)}\n`)
