@@ -16,10 +16,10 @@ const app = async (v, servers, reg, type, path) => {
   const preIp = readFileSync(path, 'utf-8')
   const name = type === 'A' ? 'ipv4' : 'ipv6'
   if (v) {
-    for (let i = 0; i < servers.length; i++) {
-      const res = await getIp(servers[i])
+    for (const server of servers) {
+      const res = await getIp(server)
       const ip = res?.replace(/[\n\t\r]/g, '').trim()
-      log(`${servers[i]}: ${ip}`)
+      log(`${server}: ${ip}`)
       if (reg.test(ip)) {
         if (ip === preIp) {
           log(name + '未改动')
