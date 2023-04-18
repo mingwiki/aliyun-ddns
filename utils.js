@@ -51,10 +51,10 @@ const UpdateDomainRecord = (RecordId, RR, Type, Value) =>
 const update = (type, result, ip) => {
   try {
     log(`将更新${type === 'A' ? 'ipv4' : 'ipv6'}为: ${ip}`)
-    log(result)
-    result.DomainRecords.Record.filter((i) => i.Type === type).forEach((i) =>
+    result.DomainRecords.Record.filter((i) => i.Type === type).forEach((i) => {
+      log(i)
       UpdateDomainRecord(i.RecordId, i.RR, i.Type, ip)
-    )
+    })
   } catch (error) {
     log(error)
   }
