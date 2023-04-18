@@ -11,9 +11,12 @@ import {
   update,
   getIp,
 } from './utils.js'
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
 const app = async (v, servers, reg, type, path) => {
-  const preIp = readFileSync(path, 'utf-8')
+  let preIp = ''
+  if (existsSync(path)) {
+    preIp = readFileSync(path, 'utf-8')
+  }
   const name = type === 'A' ? 'ipv4' : 'ipv6'
   if (v) {
     for (const server of servers) {
