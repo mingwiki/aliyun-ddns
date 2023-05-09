@@ -1,4 +1,5 @@
 import Core from '@alicloud/pop-core'
+import { existsSync, readFileSync, appendFile } from 'fs'
 const {
   AccessKeyID,
   AccessKeySecret,
@@ -63,6 +64,18 @@ const getIp = async (url) => {
   return await fetch(url)
     .then((res) => res.text())
     .catch(log)
+}
+export const getLastLine = (path) => {
+  if (existsSync(path)) {
+    const data = readFileSync(path, 'utf8')
+    const lines = data.split('\n')
+    return lines[lines.length - 1]
+  } else {
+    return 'unknown'
+  }
+}
+export const appendLastLine = (path, data) => {
+  appendFile(path, `\n${new Date().toString()}\n${data}`, log)
 }
 export {
   DomainNames,

@@ -10,13 +10,12 @@ import {
   request,
   update,
   getIp,
+  getLastLine,
+  appendLastLine,
 } from './utils.js'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 const app = async (v, servers, reg, type, path) => {
-  let preIp = ''
-  if (existsSync(path)) {
-    preIp = readFileSync(path, 'utf-8')
-  }
+  const preIp = getLastLine(path)
   const name = type === 'A' ? 'ipv4' : 'ipv6'
   if (v) {
     for (const server of servers) {
@@ -32,14 +31,14 @@ const app = async (v, servers, reg, type, path) => {
               .then((result) => update(type, result, ip))
               .catch(log)
           })
+          appendLastLine(path, ip)
         }
-        writeFileSync(path, ip, 'utf-8')
         return
       } else {
-        writeFileSync(path, '', 'utf-8')
+        appendLastLine(path, 'unknown')
       }
     }
-    if (!preIp) {
+    if (!preIp || preIp === 'unknown') {
       log('未找到' + name + '请检查网络')
     }
   }
