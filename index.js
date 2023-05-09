@@ -13,7 +13,6 @@ import {
   getLastLine,
   appendLastLine,
 } from './utils.js'
-import { readFileSync, writeFileSync, existsSync } from 'fs'
 const app = async (v, servers, reg, type, path) => {
   const preIp = getLastLine(path)
   const name = type === 'A' ? 'ipv4' : 'ipv6'
