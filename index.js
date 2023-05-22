@@ -12,37 +12,37 @@ import {
   getIp,
   getLastLine,
   appendLastLine,
-} from './utils.js'
+} from "./utils.js";
 const app = async (servers, reg, type, path) => {
-  const preIp = getLastLine(path)
-  const name = type === 'A' ? 'ipv4' : 'ipv6'
+  const preIp = getLastLine(path);
+  const name = type === "A" ? "ipv4" : "ipv6";
   for (const server of servers) {
-    const res = await getIp(server)
-    const ip = res?.replace(/[\n\t\r]/g, '').trim()
-    log(`${server}: ${ip}`)
+    const res = await getIp(server);
+    const ip = res?.replace(/[\n\t\r]/g, "").trim();
+    log(`${server}: ${ip}`);
     if (reg.test(ip)) {
       if (ip === preIp) {
-        log(name + '未改动')
+        log(name + "未改动");
       } else {
         DomainNames.map((DomainName) => {
-          request('DescribeDomainRecords', { DomainName })
+          request("DescribeDomainRecords", { DomainName })
             .then((result) => update(type, result, ip))
-            .catch(log)
-        })
-        appendLastLine(path, ip)
+            .catch(log);
+        });
+        appendLastLine(path, ip);
       }
-      return
+      return;
     } else {
-      appendLastLine(path, 'unknown')
+      if (reg.test(preIp)) {
+        appendLastLine(path, "unknown");
+      }
+      log("未找到" + name + "请检查网络");
     }
   }
-  if (!preIp || preIp === 'unknown') {
-    log('未找到' + name + '请检查网络')
-  }
+};
+if (ipv4 === "true") {
+  app(ipv4s, ipv4Reg, "A", "./pre4");
 }
-if (ipv4 === 'true') {
-  app(ipv4s, ipv4Reg, 'A', './pre4')
-}
-if (ipv6 === 'true') {
-  app(ipv6s, ipv6Reg, 'AAAA', './pre6')
+if (ipv6 === "true") {
+  app(ipv6s, ipv6Reg, "AAAA", "./pre6");
 }
