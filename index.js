@@ -41,8 +41,8 @@ const app = async (servers, reg, type, path) => {
   }
 };
 if (ipv4 === "true") {
-  app(ipv4s, ipv4Reg, "A", "./pre4");
+  app(ipv4s, ipv4Reg, "A", "./ipv4.log");
 }
 if (ipv6 === "true") {
-  app(ipv6s, ipv6Reg, "AAAA", "./pre6");
+  app(ipv6s, ipv6Reg, "AAAA", "./ipv6.log");
 }

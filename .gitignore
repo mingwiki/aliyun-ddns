@@ -129,5 +129,3 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-pre4
-pre6
